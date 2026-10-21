@@ -1,0 +1,10 @@
+# Workspace-wide ignore rules (subproject .gitignore files also apply)
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules/
+**/.next/
+**/dist/
+**/coverage/
+**/*.log
+**/.DS_Store
