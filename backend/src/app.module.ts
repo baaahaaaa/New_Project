@@ -17,12 +17,12 @@ import { UsersModule } from './users/users.module';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get<string>('DB_HOST'),
-        port: parseInt(configService.get<string>('DB_PORT'), 10),
+        port: Number.parseInt(configService.get<string>('DB_PORT') ?? '5432', 10),
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        synchronize: true, // NOTE: Disable in production
+        synchronize: true, // DEVELOPMENT ONLY: must disable before production deployment
       }),
       inject: [ConfigService],
     }),
