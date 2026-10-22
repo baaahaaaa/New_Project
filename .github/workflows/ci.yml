@@ -1,0 +1,87 @@
+
+name: New Project CI
+
+on:
+  pull_request:
+    branches:
+      - feat/initial-project-setup
+
+  push:
+    branches:
+      - feat/initial-project-setup
+      - fix/nestjs-build-tests-security
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: NestJS - Build and Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install npm 11.12.1
+        run: npm install --global npm@11.12.1
+
+      - name: Check Node.js and npm versions
+        run: |
+          node --version
+          npm --version
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Build NestJS backend
+        run: npm run build
+
+      - name: Run NestJS tests
+        run: npx jest --runInBand
+
+      - name: Audit backend dependencies
+        run: npm audit --omit=dev
+
+  frontend:
+    name: Next.js - Lint and Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: educational-platform
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: educational-platform/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Check frontend lint
+        run: npm run lint
+
+      - name: Build Next.js frontend
+        run: npm run build
+
+      - name: Audit frontend dependencies
+        run: npm audit --omit=dev
+        continue-on-error: true

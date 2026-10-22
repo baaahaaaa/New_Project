@@ -44,8 +44,8 @@ export default function LoginPage() {
 
       // On success, redirect to the homepage
       router.push("/");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erreur inattendue");
     }
   };
 
@@ -89,9 +89,9 @@ export default function LoginPage() {
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
-            Vous n'avez pas de compte?{" "}
+            Vous n&apos;avez pas de compte?{" "}
             <Link href="/signup" className="underline">
-              S'inscrire
+              S&apos;inscrire
             </Link>
           </div>
         </CardContent>
