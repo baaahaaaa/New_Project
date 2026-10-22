@@ -1,0 +1,61 @@
+name: New Project CI
+
+on:
+  pull_request:
+    branches:
+      - feat/initial-project-setup
+  push:
+    branches:
+      - feat/initial-project-setup
+      - fix/nestjs-build-tests-security
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: NestJS - Build and Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - run: npm ci
+      - run: npm run build
+      - run: npx jest --runInBand
+      - run: npm audit --omit=dev
+
+  frontend:
+    name: Next.js - Lint and Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: educational-platform
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: educational-platform/package-lock.json
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+      - name: Frontend dependency audit
+        run: npm audit --omit=dev
+        continue-on-error: true
