@@ -40,8 +40,8 @@ export default function SignupPage() {
 
       // On success, redirect to the login page
       router.push("/login");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erreur inattendue");
     }
   };
 

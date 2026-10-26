@@ -8,10 +8,10 @@ export default function Home() {
           Plateforme Éducative Innovante
         </h1>
         <p className="mt-4 text-lg text-muted-foreground">
-          Bienvenue sur le futur de l'apprentissage en ligne.
+          Bienvenue sur le futur de l&apos;apprentissage en ligne.
         </p>
         <div className="mt-8">
-          <Button>Commencer l'aventure</Button>
+          <Button>Commencer l&apos;aventure</Button>
         </div>
       </div>
     </main>

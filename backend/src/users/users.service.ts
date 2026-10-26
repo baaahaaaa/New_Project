@@ -16,8 +16,8 @@ export class UsersService {
     return this.usersRepository.save(newUser);
   }
 
-  async findOneByEmail(email: string): Promise<User | undefined> {
-    // Explicitly select the password field as it's not selected by default
+  // TypeORM getOne() returns null when no matching record exists.
+  async findOneByEmail(email: string): Promise<User | null> {
     return this.usersRepository
       .createQueryBuilder('user')
       .where('user.email = :email', { email })
